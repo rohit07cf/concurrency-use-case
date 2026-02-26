@@ -19,7 +19,7 @@ Or run both with the combined user below (default):
 
 import os
 
-from locust import HttpUser, LoadTestShape, between, task
+from locust import HttpUser, between, task
 
 SCAN_PAYLOAD = {"content": "This is a sample text that needs to be scanned for policy violations."}
 CLIENT_TIMEOUT_NB = 3   # nonblocking accept should be fast
@@ -79,19 +79,3 @@ class FixedBlockingUser(HttpUser):
                 resp.failure(f"Unexpected: {resp.status_code}")
 
 
-class BurstShape(LoadTestShape):
-    """Same burst shape as baseline for apples-to-apples comparison."""
-    stages = [
-        (10, 50, 25),
-        (30, 150, 50),
-        (60, 200, 100),
-        (90, 200, 100),
-        (120, 50, 20),
-    ]
-
-    def tick(self):
-        run_time = self.get_run_time()
-        for stage_end, users, spawn_rate in self.stages:
-            if run_time < stage_end:
-                return users, spawn_rate
-        return None
