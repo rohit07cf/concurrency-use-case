@@ -128,7 +128,9 @@ TARGET_HOST=http://localhost:8002 \
   --headless -u 200 -r 100 -t 30s
 ```
 
-The `AggressiveSpikeShape` class ramps to 200 users in 2 seconds, then holds.
+The spike locust file uses an `AggressiveSpikeShape` class that ramps to 200 users
+in 2 seconds, then holds — run it headless only. The baseline and fixed locust files
+let you set users/ramp-up manually in the Locust web UI.
 
 ## Locust Commands Reference
 

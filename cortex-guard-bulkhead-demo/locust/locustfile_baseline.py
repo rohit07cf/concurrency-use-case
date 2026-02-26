@@ -4,7 +4,7 @@ Traffic mix: 10:1 nonblocking:blocking.
 Demonstrates shared-capacity queueing failure under burst load.
 """
 
-from locust import HttpUser, LoadTestShape, between, task
+from locust import HttpUser, between, task
 
 
 SCAN_PAYLOAD = {"content": "This is a sample text that needs to be scanned for policy violations."}
@@ -48,22 +48,3 @@ class BaselineUser(HttpUser):
                 resp.failure(f"Unexpected: {resp.status_code}")
 
 
-class BurstShape(LoadTestShape):
-    """Ramp quickly to simulate burst traffic.
-
-    Stages: (duration_s, users, spawn_rate)
-    """
-    stages = [
-        (10, 50, 25),    # ramp to 50 users in ~2s
-        (30, 150, 50),   # ramp to 150 over next 20s
-        (60, 200, 100),  # spike to 200 users
-        (90, 200, 100),  # hold at 200
-        (120, 50, 20),   # cool down
-    ]
-
-    def tick(self):
-        run_time = self.get_run_time()
-        for stage_end, users, spawn_rate in self.stages:
-            if run_time < stage_end:
-                return users, spawn_rate
-        return None  # stop
