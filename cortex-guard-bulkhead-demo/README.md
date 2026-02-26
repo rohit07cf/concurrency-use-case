@@ -3,6 +3,8 @@
 Demonstrates how **shared-capacity queueing** causes upstream timeouts in an ML
 scanning microservice, and how **bulkhead isolation + admission control** fixes it.
 
+> **Read the blog post:** [Your ML Service Looks Fine — Until a Burst Kills It](blog/shared_capacity_queueing_bulkhead_fix.md) — a 5-minute walkthrough of the problem and fix.
+
 ## Problem Statement
 
 A single "Cortex-Guard" service handles two types of traffic:
